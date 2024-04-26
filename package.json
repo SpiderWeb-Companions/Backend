@@ -1,0 +1,24 @@
+{
+    "name": "wsbe",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "tsc",
+        "dev": "npm run build && concurrently \"tsc --watch\" \"nodemon dist/index.js\"",
+        "serve": "npm run build && node dist/index.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/express": "^4.17.21",
+        "@types/node": "^20.12.7",
+        "concurrently": "^8.2.2",
+        "nodemon": "^3.1.0",
+        "typescript": "^5.4.5"
+    },
+    "dependencies": {
+        "express": "^4.19.2",
+        "reflect-metadata": "^0.2.2"
+    }
+}
