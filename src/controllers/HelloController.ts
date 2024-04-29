@@ -19,6 +19,7 @@ export class HelloController implements IController {
 
   @Post('/echo')
   echo(req: Request, res: Response) {
+    const { message } = req.body;
     res.send(`You said: hey`);
   }
   

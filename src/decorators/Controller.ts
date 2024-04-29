@@ -1,5 +1,5 @@
 export function Controller(path: string) {
-    return function (constructor: any) {
+    return function (constructor: { endpoint?: string }) {
         constructor.endpoint = path;
     };
 }
