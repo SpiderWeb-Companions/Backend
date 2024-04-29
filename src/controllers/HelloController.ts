@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import { Controller, Get, Post} from "../decorators";
-import { IController } from '../interfaces';
+import { controller, EndpointDefenition } from '../interfaces';
 
 @Controller('/api')
-export class HelloController implements IController {
+export class HelloController implements controller {
   // Define these to make the interface happy
   endpoint!: string;
-  endpoints!: { [key: string]: { method: string; handler: Function; }; };
+  endpoints!: { [key: string]: EndpointDefenition; };
   // define these to make the array in index.ts happy
   static endpoint = '';
   static endpoints = {}

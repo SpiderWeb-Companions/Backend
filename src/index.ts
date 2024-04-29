@@ -3,7 +3,7 @@ import { registerControllers } from './server';
 import { Logger } from './logging/logger';
 import { logRequest }  from "./MiddleWare";
 import { 
-    HelloController
+    HelloController,
 } from './controllers';
 
 const app = express();

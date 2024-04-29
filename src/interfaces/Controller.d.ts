@@ -1,4 +1,6 @@
-export interface IController {
+import { EndpointDefenition } from "./EndpointDefention";
+
+export interface controller {
     endpoint: string;
-    endpoints: { [key: string]: { method: string, handler: Function } };
+    endpoints: { [key: string]: EndpointDefenition };
 }
