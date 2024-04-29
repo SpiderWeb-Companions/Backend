@@ -1,16 +1,12 @@
 import { Application } from 'express';
+import { IController, EndpointDefenition } from './interfaces';
 
 // Sorry for any :(
-export function registerControllers(app: Application, controllers: any[]) {
+export function registerControllers(app: Application, controllers: IController[]) {
     controllers.forEach((controller) => {
-        const instance = new controller();
-        const basePath = Reflect.getMetadata('path', controller);
-        Object.getOwnPropertyNames(controller.prototype).forEach((methodName) => {
-            const route = Reflect.getMetadata('route', controller.prototype, methodName);
-            const method: keyof Application = Reflect.getMetadata('method', controller.prototype, methodName);
-            if (route && method) {
-                app[method](basePath + route, instance[methodName].bind(instance));
+        for (const [key, value] of Object.entries(controller.endpoints)) {
+                const method: keyof Application = (value as any).method;
+                app[method](controller.endpoint + key, (value as any).handler);
             }
-        });
     });
 }

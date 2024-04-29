@@ -2,22 +2,22 @@ import { HttpMethod } from "../enums";
 import { HttpMethodDecorator } from "./HttpMethodDecorator";
 
 
-export function Get(route: string) {
-    return HttpMethodDecorator(HttpMethod.GET, route);
+export function Get(route: string, controller: any) {
+    return HttpMethodDecorator(HttpMethod.GET, route, controller);
 }
 
-export function Post(route: string) {
-    return HttpMethodDecorator(HttpMethod.POST, route);
+export function Post(route: string, controller: any) {
+    return HttpMethodDecorator(HttpMethod.POST, route, controller);
 }
 
-export function Delete(route: string) {
-    return HttpMethodDecorator(HttpMethod.DELETE, route);
+export function Delete(route: string, controller: any) {
+    return HttpMethodDecorator(HttpMethod.DELETE, route, controller);
 }
 
-export function Patch(route: string) {
-    return HttpMethodDecorator(HttpMethod.PATCH, route);
+export function Patch(route: string, controller: any) {
+    return HttpMethodDecorator(HttpMethod.PATCH, route, controller);
 }
 
-export function Put(route: string) {
-    return HttpMethodDecorator(HttpMethod.PUT, route);
+export function Put(route: string, controller: any) {
+    return HttpMethodDecorator(HttpMethod.PUT, route, controller);
 }
