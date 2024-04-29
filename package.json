@@ -18,7 +18,6 @@
         "typescript": "^5.4.5"
     },
     "dependencies": {
-        "express": "^4.19.2",
-        "reflect-metadata": "^0.2.2"
+        "express": "^4.19.2"
     }
 }

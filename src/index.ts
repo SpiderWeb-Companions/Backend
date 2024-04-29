@@ -1,4 +1,3 @@
-// import "reflect-metadata";
 import express from 'express';
 import { registerControllers } from './server';
 import { Logger } from './logging/logger';
