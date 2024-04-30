@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Controller, Get, Post} from "../decorators";
 import { controller, EndpointDefenition } from '../interfaces';
+import { DBPool } from '../database';
 
 @Controller('/api')
 export class HelloController implements controller {
@@ -15,6 +16,14 @@ export class HelloController implements controller {
   @Get('/hello')
   hello(req: Request, res: Response) {
     res.send('Hello, World!');
+  }
+
+  @Get('/user/:id')
+  test(req: Request, res: Response) {
+    const { id } = req.params;
+    // const userId = req.params.id;
+    console.log(id);
+    res.send(`User ID: ${id}`);
   }
 
   @Post('/echo')
