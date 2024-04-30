@@ -1,16 +1,12 @@
 name: Deploy API
 
-# on:
-#   pull_request:
-#     types:
-#       - closed
-#     branches: 
-#       - main
 on:
-    push:
-      branches: [ "main" ]
-    pull_request:
-      branches: [ "main" ]
+  pull_request:
+    types:
+      - closed
+    branches: 
+      - main
+
 
 jobs:
   build:

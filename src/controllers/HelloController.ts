@@ -21,8 +21,6 @@ export class HelloController implements controller {
   @Get('/user/:id')
   test(req: Request, res: Response) {
     const { id } = req.params;
-    // const userId = req.params.id;
-    console.log(id);
     res.send(`User ID: ${id}`);
   }
 
