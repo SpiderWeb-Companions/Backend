@@ -41,6 +41,13 @@ CREATE TABLE "AdoptionForm" (
   "comments" TEXT
 );
 
+CREATE TABLE "ContactUS" (
+  "id" SERIAL PRIMARY KEY,
+  "FirstName" TEXT,
+  "Email" TEXT,
+  "Message" TEXT
+);
+
 CREATE TABLE "Species" (
   "id" SERIAL PRIMARY KEY,
   "SpeciesName" TEXT,
