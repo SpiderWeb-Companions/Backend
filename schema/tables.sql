@@ -30,15 +30,10 @@ CREATE TABLE "UserProfile" (
 
 
 CREATE TABLE "AdoptionForm" (
-  "id" SERIAL PRIMARY KEY,
-  "FirstName" TEXT,
-  "LastName" TEXT,
-  "email" TEXT,
-  "phone" TEXT,
-  "address" TEXT,
-  "experience" TEXT,
-  "reason" TEXT,
-  "comments" TEXT
+    "id" SERIAL PRIMARY KEY,
+    "user" INTEGER,
+    "reason" TEXT,
+    "comments" TEXT
 );
 
 CREATE TABLE "Species" (
@@ -49,6 +44,45 @@ CREATE TABLE "Species" (
   "habitat" TEXT,
   "food" TEXT
 );
+
+CREATE OR REPLACE FUNCTION adopt_spider(
+    email TEXT,
+    reason TEXT,
+    comment TEXT,
+    spider_id INTEGER
+)
+    RETURNS VOID
+AS $$
+DECLARE
+    user_id INTEGER;
+BEGIN
+    -- Get the user ID based on the provided email
+    SELECT id INTO user_id
+    FROM "UserProfile"
+    WHERE "username" = email;
+
+    IF user_id IS NULL THEN
+        RAISE EXCEPTION 'User with email % not found', email;
+    END IF;
+
+    -- Insert a new record into the AdoptionForm table with the user_id
+    INSERT INTO "AdoptionForm" ("user", "reason", "comments")
+    VALUES (user_id, reason, comment);
+
+    -- Add the spider ID to the user's spiders array
+    UPDATE "UserProfile"
+    SET "spiders" = array_append("spiders", spider_id)
+    WHERE "id" = user_id;
+
+    -- Update the spider's adoption status to "adopted"
+    UPDATE "SpiderProfile"
+    SET "adoptionStatus" = (SELECT "id" FROM "AdoptionStatus" WHERE "status" = 'adopted')
+    WHERE "id" = spider_id;
+END;
+$$
+    LANGUAGE plpgsql;
+
+ALTER TABLE "AdoptionForm" ADD FOREIGN KEY ("user") REFERENCES "UserProfile" ("id");
 
 ALTER TABLE "SpiderProfile" ADD FOREIGN KEY ("species") REFERENCES "Species" ("id");
 
