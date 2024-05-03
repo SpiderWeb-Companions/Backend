@@ -6,7 +6,9 @@ import { DBPool } from '../database';
 import { 
     IndividualSpiderResponse, 
     ErrorResponse, 
-    AllSpidersResponse 
+    AllSpidersResponse,
+    SpeciesResponse,
+    StatusResponse
 } from '../interfaces/Responses';
 import {
     AllSpidersRequest
@@ -109,6 +111,32 @@ export class SpiderController implements controller {
         return;
     }
     res.send(rows);
+  }
+
+  @Get('/species')
+  async GetSpecies(req: Request, res: Response<ErrorResponse | SpeciesResponse[]>) {
+    try {
+        const { rows } : QueryResult<SpeciesResponse> = await DBPool.query('SELECT "SpeciesName" FROM "Species";');
+        res.send(rows);
+    } catch (error) {
+        res.status(500).send({
+            message: 'Error fetching species',
+            code: 500
+        } as ErrorResponse);
+    }
+  }
+
+  @Get('/status')
+  async GetStatus(req: Request, res: Response<ErrorResponse | StatusResponse[]>) {
+      try {
+          const { rows } : QueryResult<StatusResponse> = await DBPool.query('SELECT "status" FROM "AdoptionStatus";');
+          res.send(rows);
+      } catch (error) {
+          res.status(500).send({
+              message: 'Error fetching status',
+              code: 500
+          } as ErrorResponse);
+      }
   }
   
 }
