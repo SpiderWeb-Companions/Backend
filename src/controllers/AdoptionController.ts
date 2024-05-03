@@ -17,7 +17,7 @@ export class AdoptionController implements controller {
   @Post('/adopt')
   async adopt(req: Request<AdoptRequest>, res: Response<SuccesResponse| ErrorResponse>) {
     try {
-      const { rows } = await DBPool.query(`
+      await DBPool.query(`
         SELECT adopt_spider($1, $2, $3, $4 )
       `, [
         req.body.Email,
@@ -26,9 +26,9 @@ export class AdoptionController implements controller {
         req.body.SpiderID
       ]);
     } catch (error) {
-      res.status(500).send({
+      res.status(404).send({
         message: 'Spider not found',
-        code: 500
+        code: 404
       } as ErrorResponse);
       return;
     }
