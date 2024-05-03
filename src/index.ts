@@ -3,9 +3,10 @@ import { registerControllers } from './server';
 import { Logger } from './logging/logger';
 import { logRequest }  from "./MiddleWare";
 import {
+  AdoptionController,
   ContactController,
-    HelloController,
-    SpiderController
+  HelloController,
+  SpiderController
 } from './controllers';
 const app = express();
 app.use(express.json());
@@ -14,6 +15,7 @@ const port = 3000;
 // Register controllers here by adding controller class to array
 registerControllers(app, [
   ContactController,
+  AdoptionController,
   HelloController,
   SpiderController
 ]);
