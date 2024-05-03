@@ -3,7 +3,7 @@ import { Controller, Get, Post} from "../decorators";
 import { controller, EndpointDefenition } from '../interfaces';
 import { DBPool } from '../database';
 import { ContactRequest } from '../interfaces/Requests';
-import { ErrorResponse } from '../interfaces/Responses';
+import { ErrorResponse, SuccesResponse } from '../interfaces/Responses';
 import { send } from "../util";
 
 @Controller('/api')
@@ -15,7 +15,7 @@ export class ContactController implements controller {
   static endpoints = {}
   
   @Post('/contact')
-  async ContactUs(req: Request<ContactRequest>, res: Response<any | ErrorResponse>) {
+  async ContactUs(req: Request<ContactRequest>, res: Response<SuccesResponse | ErrorResponse>) {
     try {
       await DBPool.query(`
         INSERT INTO "ContactUS" ("FirstName", "Email", "Message")
@@ -36,7 +36,7 @@ export class ContactController implements controller {
     res.send({
       message: 'Message sent successfully',
       code: 200
-    } as any);
+    } as SuccesResponse);
   }
   
 }
