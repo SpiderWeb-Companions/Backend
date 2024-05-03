@@ -1,13 +1,18 @@
 import { Request, Response } from 'express';
 import { Controller, Get, Post} from "../decorators";
-import { controller, EndpointDefenition } from '../interfaces';
+import { controller, EndpointDefenition} from '../interfaces';
 import { QueryResult } from 'pg';
 import { DBPool } from '../database';
 import { 
     IndividualSpiderResponse, 
     ErrorResponse, 
-    AllSpidersResponse 
+    AllSpidersResponse,
+    SpeciesResponse,
+    StatusResponse
 } from '../interfaces/Responses';
+import {
+    AllSpidersRequest
+} from '../interfaces/Requests';
 
 @Controller('/api')
 export class SpiderController implements controller {
@@ -55,10 +60,34 @@ export class SpiderController implements controller {
     res.send(rows[0]);
   }
   
-  @Get('/all/spiders/:limit')
-  async GetAllSpiders(req: Request, res: Response<AllSpidersResponse[] | ErrorResponse>) {
-    const { limit } = req.params;
-    const { rows }: QueryResult<AllSpidersResponse> = await DBPool.query(`
+  @Post('/all/spiders')
+  async GetAllSpiders(req: Request<AllSpidersRequest>, res: Response<AllSpidersResponse[] | ErrorResponse>) {
+      const filters = [];
+      const params = [];
+
+      if(req.body.search) {
+            filters.push(`sp."name" ILIKE $${params.length + 1}`);
+            params.push(`%${req.body.search}%`);
+      }
+
+      if (req.body.age) {
+          filters.push(`sp."age" = $${params.length + 1}`);
+          params.push(req.body.age);
+      }
+
+      if (req.body.species) {
+          filters.push(`s."SpeciesName" = $${params.length + 1}`);
+          params.push(req.body.species);
+      }
+
+      if (req.body.status) {
+          filters.push(`astatus."status" = $${params.length + 1}`);
+          params.push(req.body.status);
+      }
+
+      params.push(req.body.limit);
+
+      const query = `
         SELECT
             sp."id",
             sp."name",
@@ -69,18 +98,45 @@ export class SpiderController implements controller {
             "SpiderProfile" sp
             JOIN "Species" s ON sp."species" = s."id"
             JOIN "AdoptionStatus" astatus ON sp."adoptionStatus" = astatus."id"
-        LIMIT $1;
-    `,
-    [limit]);
+        ${filters.length > 0 ? 'WHERE' : ''} ${filters.join(' OR ')}
+        LIMIT $${params.length};`;
+    console.log(query, params);
+    const { rows }: QueryResult<AllSpidersResponse> = await DBPool.query(query, params);
     if (rows.length === 0) {
         res.status(404).send({
             message: 'No spiders available for adoption, check back later',
             code: 404
-        
+
         } as ErrorResponse);
         return;
     }
     res.send(rows);
+  }
+
+  @Get('/species')
+  async GetSpecies(req: Request, res: Response<ErrorResponse | SpeciesResponse[]>) {
+    try {
+        const { rows } : QueryResult<SpeciesResponse> = await DBPool.query('SELECT "SpeciesName" FROM "Species";');
+        res.send(rows);
+    } catch (error) {
+        res.status(500).send({
+            message: 'Error fetching species',
+            code: 500
+        } as ErrorResponse);
+    }
+  }
+
+  @Get('/status')
+  async GetStatus(req: Request, res: Response<ErrorResponse | StatusResponse[]>) {
+      try {
+          const { rows } : QueryResult<StatusResponse> = await DBPool.query('SELECT "status" FROM "AdoptionStatus";');
+          res.send(rows);
+      } catch (error) {
+          res.status(500).send({
+              message: 'Error fetching status',
+              code: 500
+          } as ErrorResponse);
+      }
   }
   
 }
