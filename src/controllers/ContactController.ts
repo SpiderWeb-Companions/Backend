@@ -4,6 +4,7 @@ import { controller, EndpointDefenition } from '../interfaces';
 import { DBPool } from '../database';
 import { ContactRequest } from '../interfaces/Requests';
 import { ErrorResponse } from '../interfaces/Responses';
+import { send } from "../util";
 
 @Controller('/api')
 export class ContactController implements controller {
@@ -21,6 +22,11 @@ export class ContactController implements controller {
         VALUES ($1, $2, $3);
       `,
       [req.body.name, req.body.email, req.body.message]);
+      await send(
+          req.body.email,
+          "We have received your message and will get back to you",
+          "Spider Web contact"
+      );
     } catch (error) {
       res.status(500).send({
         message: 'Internal server error',
