@@ -4,6 +4,7 @@ import { Logger } from './logging/logger';
 import { logRequest }  from "./MiddleWare";
 import {
   AdoptionController,
+  ContactController,
   HelloController,
   SpiderController
 } from './controllers';
@@ -13,6 +14,7 @@ app.use(logRequest);
 const port = 3000;
 // Register controllers here by adding controller class to array
 registerControllers(app, [
+  ContactController,
   AdoptionController,
   HelloController,
   SpiderController
