@@ -15,30 +15,15 @@ export class AdoptionController implements controller {
   static endpoints = {}
 
   @Post('/adopt')
-  async adopt(req: Request<AdoptRequest>, res: Response<any| ErrorResponse>) {
+  async adopt(req: Request<AdoptRequest>, res: Response<SuccesResponse| ErrorResponse>) {
     try {
       const { rows } = await DBPool.query(`
-        INSERT INTO "AdoptionForm" (
-          "FirstName",
-          "LastName",
-          "email",
-          "phone",
-          "address",
-          "experience",
-          "reason",
-          "comments"
-        ) VALUES (
-          $1, $2, $3, $4, $5, $6, $7, $8
-        ) RETURNING *;
+        SELECT adopt_spider($1, $2, $3, $4 )
       `, [
-        req.body.FirstName,
-        req.body.LastName,
         req.body.Email,
-        req.body.Phone,
-        req.body.Address,
-        req.body.Experience,
         req.body.AdoptionReason,
-        req.body.Comments
+        req.body.Comments,
+        req.body.SpiderID
       ]);
     } catch (error) {
       res.status(500).send({
