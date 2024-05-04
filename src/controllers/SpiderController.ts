@@ -11,7 +11,8 @@ import {
     StatusResponse
 } from '../interfaces/Responses';
 import {
-    AllSpidersRequest
+    AllSpidersRequest,
+    FavouriteSpiderRequest
 } from '../interfaces/Requests';
 
 @Controller('/api')
@@ -22,6 +23,23 @@ export class SpiderController implements controller {
   static endpoint = '';
   static endpoints = {}
   
+  @Post('/favourite')
+  async getFavourites(req: Request<FavouriteSpiderRequest>, res: Response<AllSpidersResponse[] | ErrorResponse>) {
+    const { rows }: QueryResult<AllSpidersResponse> = await DBPool.query(`
+        SELECT
+            s.status AS adoption_status,
+            sp."name" AS spider_name,
+            sp2."SpeciesName" AS species_name,
+            sp."photo" AS spider_photo
+        FROM "UserProfile" up
+                 JOIN "SpiderProfile" sp ON sp."id" = ANY(up."spiders")
+                 JOIN "AdoptionStatus" s ON s."id" = sp."adoptionStatus"
+                 JOIN "Species" sp2 ON sp2."id" = sp."species"
+        WHERE up."username" = $1;
+
+    `, [req.body.username]);
+    res.send(rows);
+  }
 
   @Get('/spider/:id')
   async GetSpiderById(req: Request, res: Response<IndividualSpiderResponse | ErrorResponse>) {
