@@ -6,3 +6,7 @@ export interface AllSpidersRequest {
     species: string | undefined; // Should this be a type?
     status: status | undefined;
 }
+
+export interface FavouriteSpiderRequest {
+    username: string;
+}
