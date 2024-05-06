@@ -15,6 +15,7 @@ export class HelloController implements controller {
 
   @Get('/hello')
   hello(req: Request, res: Response) {
+
     res.send('Hello, World!');
   }
 
