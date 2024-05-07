@@ -6,7 +6,8 @@ import {
   AdoptionController,
   ContactController,
   HelloController,
-  SpiderController
+  SpiderController,
+  AuthController
 } from './controllers';
 const app = express();
 app.use(express.json());
@@ -20,9 +21,10 @@ app.use((req, res, next) => {
 const port = 3000;
 // Register controllers here by adding controller class to array
 registerControllers(app, [
+  HelloController,
+  AuthController,
   ContactController,
   AdoptionController,
-  HelloController,
   SpiderController
 ]);
 
