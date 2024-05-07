@@ -7,10 +7,7 @@ export const isAuthenticated = async (accessToken: string) => {
         "Authorization": `Bearer ${accessToken}`
       }
     });
-    return response.status == 200;
-
-  } else {
-    return false;
-  }
-
+    return response.ok;
+  } 
+  return false;
 };
