@@ -44,10 +44,4 @@ export const createUser = async (accessToken: string) : Promise<SuccesResponse |
             code: 500
         } as ErrorResponse;
     }
-
   }
-
-
-  
-  
-  
