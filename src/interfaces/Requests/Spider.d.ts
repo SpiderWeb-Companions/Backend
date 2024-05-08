@@ -1,6 +1,7 @@
 import { status } from "../../types";
 export interface AllSpidersRequest {
     limit: number;
+    offset: number;
     search: string | undefined;
     age: number | undefined;
     species: string | undefined; // Should this be a type?
