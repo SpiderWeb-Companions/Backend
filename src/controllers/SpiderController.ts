@@ -23,14 +23,15 @@ export class SpiderController implements controller {
   static endpoint = '';
   static endpoints = {}
   
-  @Post('/favourite')
+  @Post('/my/spiders')
   async getFavourites(req: Request<FavouriteSpiderRequest>, res: Response<AllSpidersResponse[] | ErrorResponse>) {
     const { rows }: QueryResult<AllSpidersResponse> = await DBPool.query(`
         SELECT
-            s.status AS adoption_status,
-            sp."name" AS spider_name,
-            sp2."SpeciesName" AS species_name,
-            sp."photo" AS spider_photo
+            sp."id" AS id,
+            sp."name" AS name,
+            sp."photo" AS photo,
+            sp2."SpeciesName" AS species,
+            s.status AS adoptionStatus
         FROM "UserProfile" up
                  JOIN "SpiderProfile" sp ON sp."id" = ANY(up."spiders")
                  JOIN "AdoptionStatus" s ON s."id" = sp."adoptionStatus"
@@ -71,7 +72,7 @@ export class SpiderController implements controller {
         res.status(404).send({
             message: 'Spider not found',
             code: 404
-        
+
         } as ErrorResponse);
         return;
     }
@@ -116,18 +117,10 @@ export class SpiderController implements controller {
             "SpiderProfile" sp
             JOIN "Species" s ON sp."species" = s."id"
             JOIN "AdoptionStatus" astatus ON sp."adoptionStatus" = astatus."id"
-        ${filters.length > 0 ? 'WHERE' : ''} ${filters.join(' OR ')}
-        LIMIT $${params.length};`;
-    console.log(query, params);
+        ${filters.length > 0 ? 'WHERE' : ''} ${filters.join(' AND ')}
+        LIMIT $${params.length}
+        OFFSET 2;`;
     const { rows }: QueryResult<AllSpidersResponse> = await DBPool.query(query, params);
-    if (rows.length === 0) {
-        res.status(404).send({
-            message: 'No spiders available for adoption, check back later',
-            code: 404
-
-        } as ErrorResponse);
-        return;
-    }
     res.send(rows);
   }
 

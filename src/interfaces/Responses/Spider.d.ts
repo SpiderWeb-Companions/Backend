@@ -3,7 +3,7 @@ export interface IndividualSpiderResponse {
     name: string;
     age: number;
     story: string;
-    heatlh: string;
+    health: string;
     photo: string;
     species: string;
     gender: string;
