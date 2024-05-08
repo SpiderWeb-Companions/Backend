@@ -15,5 +15,5 @@ export interface AllSpidersResponse {
     name: string;
     photo: string;
     species: string;
-    adoptionStatus: string;
+    adoptionstatus: string;
 }
