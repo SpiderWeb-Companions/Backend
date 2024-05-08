@@ -104,7 +104,7 @@ export class SpiderController implements controller {
           params.push(req.body.status);
       }
 
-      params.push(req.body.limit);
+      params.push(req.body.limit, req.body.offset);
 
       const query = `
         SELECT
@@ -118,8 +118,8 @@ export class SpiderController implements controller {
             JOIN "Species" s ON sp."species" = s."id"
             JOIN "AdoptionStatus" astatus ON sp."adoptionStatus" = astatus."id"
         ${filters.length > 0 ? 'WHERE' : ''} ${filters.join(' AND ')}
-        LIMIT $${params.length}
-        OFFSET 2;`;
+        LIMIT $${filters.length + 1}
+        OFFSET $${filters.length + 2};`;
     const { rows }: QueryResult<AllSpidersResponse> = await DBPool.query(query, params);
     res.send(rows);
   }
