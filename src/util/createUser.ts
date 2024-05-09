@@ -28,8 +28,8 @@ export const createUser = async (accessToken: string) : Promise<SuccesResponse |
     }
     try {
       await DBPool.query(`
-        INSERT INTO "UserProfile" ("username", "ProfilePicture", "spiders")
-        VALUES ($1, $2, ARRAY[]);
+        INSERT INTO "UserProfile" ("username", "ProfilePicture", "address","spiders")
+        VALUES ($1, $2, "none", ARRAY[]);
       `,
       [userDetails.email, userDetails.picture]);
       return {
