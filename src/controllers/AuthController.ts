@@ -23,7 +23,7 @@ export class AuthController implements controller {
   async Authenticate(req: Request, res: Response<AuthResponse>) {
     const { code } = req.body; 
 
-    let tokenURL =`https://oauth2.googleapis.com/token?client_id=${AuthController.clientId}&client_secret=${AuthController.clientSecret}&redirect_uri=${AuthController.redirectUri}&grant_type=authorization_code&code=${code}`
+    const tokenURL =`https://oauth2.googleapis.com/token?client_id=${AuthController.clientId}&client_secret=${AuthController.clientSecret}&redirect_uri=${AuthController.redirectUri}&grant_type=authorization_code&code=${code}`
     let token : AuthResponse | undefined;
     try {
       token = await authenticateUser(tokenURL);
@@ -43,7 +43,7 @@ export class AuthController implements controller {
         token as AuthResponse
       )
     } else {
-      let createUserResponse : SuccesResponse | ErrorResponse = token?.access_token ? await createUser(token.access_token) : {code: 500, message: "For some reason the Auth token doesn't exist even though google successfully returned a token"} as ErrorResponse;
+      const createUserResponse : SuccesResponse | ErrorResponse = token?.access_token ? await createUser(token.access_token) : {code: 500, message: "For some reason the Auth token doesn't exist even though google successfully returned a token"} as ErrorResponse;
       switch (createUserResponse.code) {
         case 200:
           res.status(200).send({user_created: true , ...token} as AuthResponse);
