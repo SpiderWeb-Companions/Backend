@@ -5,5 +5,6 @@ export interface AuthResponse {
     token_type?: string,
     id_token?: string,
     error?: string,
-    error_description?: string 
+    error_description?: string,
+    user_created?: boolean,
 }

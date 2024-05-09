@@ -1,7 +1,7 @@
 import express from 'express';
 import { registerControllers } from './server';
 import { Logger } from './logging/logger';
-import { logRequest }  from "./MiddleWare";
+import { logRequest, validateAuthMiddleware }  from "./MiddleWare";
 import {
   AdoptionController,
   ContactController,
@@ -12,6 +12,7 @@ import {
 const app = express();
 app.use(express.json());
 app.use(logRequest);
+app.use(validateAuthMiddleware);
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', `${process.env.FRONTEND_URL}`);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
