@@ -27,7 +27,7 @@ export class AdoptionController implements controller {
       ]);
     } catch (error) {
       res.status(500).send({
-        message: 'Spider not found',
+        message: error,
         code: 500
       } as ErrorResponse);
       return;
