@@ -149,5 +149,18 @@ export class SpiderController implements controller {
           } as ErrorResponse);
       }
   }
+
+  @Get('/count')
+  async GetCount(req: Request, res: Response) {
+      try {
+          const { rows } = await DBPool.query(`SELECT COUNT(*) FROM "SpiderProfile";`);
+          res.send(rows[0]);
+      } catch (error) {
+          res.status(500).send({
+              message: 'Error fetching status',
+              code: 500
+          } as ErrorResponse);
+      }
+  }
   
 }
