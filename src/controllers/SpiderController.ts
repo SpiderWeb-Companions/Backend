@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Controller, Get, Post} from "../decorators";
-import { controller, EndpointDefenition} from '../interfaces';
+import {controller, EndpointDefenition} from '../interfaces';
 import { QueryResult } from 'pg';
 import { DBPool } from '../database';
 import { 
@@ -8,7 +8,8 @@ import {
     ErrorResponse, 
     AllSpidersResponse,
     SpeciesResponse,
-    StatusResponse
+    StatusResponse,
+    CountResponse
 } from '../interfaces/Responses';
 import {
     AllSpidersRequest,
@@ -151,7 +152,7 @@ export class SpiderController implements controller {
   }
 
   @Get('/count')
-  async GetCount(req: Request, res: Response) {
+  async GetCount(req: Request, res: Response<ErrorResponse | CountResponse>) {
       try {
           const { rows } = await DBPool.query(`SELECT COUNT(*) FROM "SpiderProfile";`);
           res.send(rows[0]);
