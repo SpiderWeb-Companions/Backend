@@ -8,4 +8,4 @@ export function logRequest(req: Request, res: Response, next: NextFunction) {
     Logger.debug(`${req.method} ${req.url} ${JSON.stringify(req.body)}`);
   }
   next();
-};
+}
