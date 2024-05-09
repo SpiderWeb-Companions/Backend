@@ -151,17 +151,41 @@ export class SpiderController implements controller {
       }
   }
 
-  @Get('/count')
-  async GetCount(req: Request, res: Response<ErrorResponse | CountResponse>) {
-      try {
-          const { rows } = await DBPool.query(`SELECT COUNT(*) FROM "SpiderProfile";`);
-          res.send(rows[0]);
-      } catch (error) {
-          res.status(500).send({
-              message: 'Error fetching status',
-              code: 500
-          } as ErrorResponse);
+  @Post('/count')
+  async GetCount(req: Request<AllSpidersRequest>, res: Response<ErrorResponse | any>) {
+      const filters = [];
+      const params = [];
+
+      if(req.body.search) {
+          filters.push(`sp."name" ILIKE $${params.length + 1}`);
+          params.push(`%${req.body.search}%`);
       }
+
+      if (req.body.age) {
+          filters.push(`sp."age" = $${params.length + 1}`);
+          params.push(req.body.age);
+      }
+
+      if (req.body.species) {
+          filters.push(`s."SpeciesName" = $${params.length + 1}`);
+          params.push(req.body.species);
+      }
+
+      if (req.body.status) {
+          filters.push(`astatus."status" = $${params.length + 1}`);
+          params.push(req.body.status);
+      }
+
+      const query = `
+        SELECT
+            COUNT(*)
+        FROM
+            "SpiderProfile" sp
+            JOIN "Species" s ON sp."species" = s."id"
+            JOIN "AdoptionStatus" astatus ON sp."adoptionStatus" = astatus."id"
+        ${filters.length > 0 ? 'WHERE' : ''} ${filters.join(' AND ')}`;
+      const { rows } = await DBPool.query(query, params);
+      res.send(rows[0]);
   }
   
 }
