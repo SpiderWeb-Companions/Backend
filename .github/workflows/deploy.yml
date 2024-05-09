@@ -30,4 +30,4 @@ jobs:
       - name: Delete old container
         run: sudo docker rm -f spiderweb-backend-container
       - name: Run container
-        run: sudo docker run -d -e DB_CONNECTION_STRING="${{secrets.DB_CONNECTION_STRING}}" -e ADMIN_EMAIL="${{secrets.ADMIN_EMAIL}}" -e ADMIN_PASSWORD="${{secrets.ADMIN_PASSWORD}}" -e CLIENT_SECRET="${{secrets.CLIENT_SECRET}}" -e CLIENT_ID="${{secrets.CLIENT_ID}}" -e SCOPE="${{secrets.SCOPE}}" -e REDIRECT_URI="${{secrets.REDIRECT_URI}}" -p 80:3000 --name spiderweb-backend-container ${{secrets.DOCKER_USERNAME}}/swbe:latest
+        run: sudo docker run -d -e FRONTEND_URL=${{secrets.FRONTEND_URL}} -e DB_CONNECTION_STRING="${{secrets.DB_CONNECTION_STRING}}" -e ADMIN_EMAIL="${{secrets.ADMIN_EMAIL}}" -e ADMIN_PASSWORD="${{secrets.ADMIN_PASSWORD}}" -e CLIENT_SECRET="${{secrets.CLIENT_SECRET}}" -e CLIENT_ID="${{secrets.CLIENT_ID}}" -e SCOPE="${{secrets.SCOPE}}" -e REDIRECT_URI="${{secrets.REDIRECT_URI}}" -p 80:3000 --name spiderweb-backend-container ${{secrets.DOCKER_USERNAME}}/swbe:latest
