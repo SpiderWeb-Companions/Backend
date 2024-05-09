@@ -46,14 +46,16 @@ export class AuthController implements controller {
       let createUserResponse : SuccesResponse | ErrorResponse = token?.access_token ? await createUser(token.access_token) : {code: 500, message: "For some reason the Auth token doesn't exist even though google successfully returned a token"} as ErrorResponse;
       switch (createUserResponse.code) {
         case 200:
-          res.status(200).send({user_created: true , ...token} as AuthResponse)
+          res.status(200).send({user_created: true , ...token} as AuthResponse);
           break;
         case 300:
-          res.status(200).send({user_created: false , ...token} as AuthResponse)
+          res.status(200).send({user_created: false , ...token} as AuthResponse);
+          break;
         case 500:
-          res.status(500).send({user_created: false , error: "user_not_created", error_description: createUserResponse.message} as AuthResponse)
-        default:
-          res.status(500).send({error: "eish" , error_description: createUserResponse.message} as AuthResponse)
+          res.status(500).send({user_created: false , error: "user_not_created", error_description: createUserResponse.message} as AuthResponse);
+          break;
+          default:
+          res.status(500).send({error: "eish" , error_description: createUserResponse.message} as AuthResponse);
           break;
       }
     }

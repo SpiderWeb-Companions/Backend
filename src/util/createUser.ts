@@ -6,7 +6,6 @@ import { getUserDetails } from "./getUserDetails";
 
 export const createUser = async (accessToken: string) : Promise<SuccesResponse | ErrorResponse> => {
     let userDetails : UserDetails = await getUserDetails(accessToken);
-
     if(userDetails.error != undefined){
         return {
             message:  userDetails.error_description,
