@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(logRequest);
 app.use(validateAuthMiddleware);
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', `http://34.243.246.150.nip.io`);
+  res.setHeader('Access-Control-Allow-Origin', `${process.env.HOST_URL}`);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
