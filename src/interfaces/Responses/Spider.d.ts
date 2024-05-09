@@ -17,3 +17,7 @@ export interface AllSpidersResponse {
     species: string;
     adoptionstatus: string;
 }
+
+export interface CountResponse {
+    count: number;
+}

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Controller, Get, Post} from "../decorators";
-import { controller, EndpointDefenition} from '../interfaces';
+import {controller, EndpointDefenition} from '../interfaces';
 import { QueryResult } from 'pg';
 import { DBPool } from '../database';
 import { 
@@ -8,7 +8,8 @@ import {
     ErrorResponse, 
     AllSpidersResponse,
     SpeciesResponse,
-    StatusResponse
+    StatusResponse,
+    CountResponse
 } from '../interfaces/Responses';
 import {
     AllSpidersRequest,
@@ -142,6 +143,19 @@ export class SpiderController implements controller {
       try {
           const { rows } : QueryResult<StatusResponse> = await DBPool.query('SELECT "status" FROM "AdoptionStatus";');
           res.send(rows);
+      } catch (error) {
+          res.status(500).send({
+              message: 'Error fetching status',
+              code: 500
+          } as ErrorResponse);
+      }
+  }
+
+  @Get('/count')
+  async GetCount(req: Request, res: Response<ErrorResponse | CountResponse>) {
+      try {
+          const { rows } = await DBPool.query(`SELECT COUNT(*) FROM "SpiderProfile";`);
+          res.send(rows[0]);
       } catch (error) {
           res.status(500).send({
               message: 'Error fetching status',
