@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Controller, Get, Post} from "../decorators";
-import { controller, EndpointDefenition} from '../interfaces';
+import {controller, EndpointDefenition} from '../interfaces';
 import { QueryResult } from 'pg';
 import { DBPool } from '../database';
 import { 
@@ -8,7 +8,8 @@ import {
     ErrorResponse, 
     AllSpidersResponse,
     SpeciesResponse,
-    StatusResponse
+    StatusResponse,
+    CountResponse
 } from '../interfaces/Responses';
 import {
     AllSpidersRequest,

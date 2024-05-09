@@ -14,7 +14,7 @@ export const createUser = async (accessToken: string) : Promise<SuccesResponse |
        
     }
     let rows = userDetails.email ? await fetchUser(userDetails.email): undefined;
-    if (rows?.length === 0){
+    if (rows === undefined){
         return {
             message: "email does not exist on users google oauth",
             code: 500
@@ -28,8 +28,8 @@ export const createUser = async (accessToken: string) : Promise<SuccesResponse |
     }
     try {
       await DBPool.query(`
-        INSERT INTO "UserProfile" ("username", "ProfilePicture", "spiders")
-        VALUES ($1, $2, ARRAY[]);
+        INSERT INTO "UserProfile" ("username", "ProfilePicture", "address","spiders")
+        VALUES ($1, $2, 'no address', '{}');
       `,
       [userDetails.email, userDetails.picture]);
       return {
