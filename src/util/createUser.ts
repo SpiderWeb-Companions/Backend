@@ -14,7 +14,7 @@ export const createUser = async (accessToken: string) : Promise<SuccesResponse |
        
     }
     let rows = userDetails.email ? await fetchUser(userDetails.email): undefined;
-    if (rows?.length === 0){
+    if (rows === undefined){
         return {
             message: "email does not exist on users google oauth",
             code: 500
