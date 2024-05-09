@@ -17,7 +17,7 @@ export async function validateAuthMiddleware(req: Request, res: Response, next: 
       return;
     }
     if (allowedMethods.includes(req.method)) {
-      const token: string | string[] | undefined = req.headers['authorization'];
+      const token: string | string[] | undefined = req.headers['Authorization'];
       if (token && !Array.isArray(token)) {
         const isAuth: boolean = await isAuthenticated(token);
         console.log(isAuth);
