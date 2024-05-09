@@ -18,7 +18,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(logRequest);
-app.use(validateAuthMiddleware);
+// app.use(validateAuthMiddleware);
 const port = 3000;
 // Register controllers here by adding controller class to array
 registerControllers(app, [
