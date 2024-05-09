@@ -6,7 +6,6 @@ import { getUserDetails } from "./getUserDetails";
 
 export const createUser = async (accessToken: string) : Promise<SuccesResponse | ErrorResponse> => {
     let userDetails : UserDetails = await getUserDetails(accessToken);
-    debugger;
     if(userDetails.error != undefined){
         return {
             message:  userDetails.error_description,
@@ -27,9 +26,7 @@ export const createUser = async (accessToken: string) : Promise<SuccesResponse |
             code: 300
         } as SuccesResponse;
     }
-    debugger;
     try {
-        debugger;
       await DBPool.query(`
         INSERT INTO "UserProfile" ("username", "ProfilePicture", "address","spiders")
         VALUES ($1, $2, 'no address', '{}');
